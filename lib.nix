@@ -20,12 +20,20 @@ let
   let
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
     lib = nixpkgs.lib;
-    resolveDep = depProject: depSpec:
+    resolveDep = depProject:
     let 
       lowerName = lib.toLower depProject.meta.name; 
+      depSpec = builtins.head (
+        builtins.filter 
+        (spec: (lib.toLower spec.name) == lowerName)
+        meta.requires
+      );
       depPkgs = depProject.packages.x86_64-linux;
       depPkgNames = builtins.attrNames depPkgs;
-      name2Version = n: builtins.replace [lowerName "v" "_"] ["" "" "."] n;
+      name2Version = name: builtins.replaceStrings
+        [lowerName "-" "v" "_"]
+        [""        ""  ""  "."]
+        name;
       depVersions = map name2Version depPkgNames;
       defaultPackage = 
         depPkgs."${lowerName}-master" or 
@@ -33,13 +41,93 @@ let
         depPkgs."${lowerName}-unstable" or 
         depPkgs."${lowerName}-develop" or
         (builtins.trace (builtins.attrNames depPkgs) null);
-    in builtins.trace depVersions [ defaultPackage ];
+      kind = depSpec.ver.kind;
+      ver = depSpec.ver.ver;
+      compVer = a: b: builtins.compareVersions a b > 0;
+      compVerEq = a: b: builtins.compareVersions a b >= 0;
+      algs = {
+        verEq = 
+          let 
+            vSuffix = builtins.replaceStrings ["."] ["_"] ver;
+          in
+            depPkgs."${lowerName}-v${vSuffix}" or 
+            depPkgs."${lowerName}-${vSuffix}" or 
+            (builtins.trace "using default not ${vSuffix}" defaultPackage);
+        verLater = 
+          let 
+            validVersions = builtins.filter 
+              (v: compVer v ver)
+              depVersions;
+            lastVersion = builtins.head 
+              (builtins.sort compVer validVersions);
+            vSuffix = builtins.replaceStrings ["."] ["_"] lastVersion;
+          in
+            depPkgs."${lowerName}-v${vSuffix}" or 
+            depPkgs."${lowerName}-${vSuffix}" or 
+            (builtins.trace "using default not ${vSuffix}" defaultPackage);
+        verEarlier =
+          let 
+            validVersions = builtins.filter 
+              (v: compVer ver v)
+              depVersions;
+            lastVersion = builtins.head 
+              (builtins.sort compVer validVersions);
+            vSuffix = builtins.replaceStrings ["."] ["_"] lastVersion;
+          in
+            depPkgs."${lowerName}-v${vSuffix}" or 
+            depPkgs."${lowerName}-${vSuffix}" or 
+            (builtins.trace "using default not ${vSuffix}" defaultPackage);
+        verEqLater = 
+          let 
+            validVersions = builtins.filter 
+              (v: compVerEq v ver)
+              depVersions;
+            lastVersion = builtins.head 
+              (builtins.sort compVer validVersions);
+            vSuffix = builtins.replaceStrings ["."] ["_"] lastVersion;
+          in
+            depPkgs."${lowerName}-v${vSuffix}" or 
+            depPkgs."${lowerName}-${vSuffix}" or 
+            (builtins.trace "using default not ${vSuffix}" defaultPackage);
+        verEqEarlier = 
+          let 
+            validVersions = builtins.filter 
+              (v: compVerEq ver v)
+              depVersions;
+            lastVersion = builtins.head 
+              (builtins.sort compVer validVersions);
+            vSuffix = builtins.replaceStrings ["."] ["_"] lastVersion;
+          in
+            depPkgs."${lowerName}-v${vSuffix}" or 
+            depPkgs."${lowerName}-${vSuffix}" or 
+            (builtins.trace "using default not ${vSuffix}" defaultPackage);
+        verIntersect = builtins.trace "not implemented ${kind}" defaultPackage;
+        verTilde = builtins.trace "not implemented ${kind}" defaultPackage;
+        verCaret = builtins.trace "not implemented ${kind}" defaultPackage;
+        verAny = defaultPackage;
+        verSpecial = builtins.trace "not implemented ${kind}" defaultPackage;
+
+      };
+      pkg = algs.${kind} or defaultPackage;
+    in [ pkg ];
+    resolveDeps = deps: map resolveDep (builtins.attrValues deps);
+    ref = builtins.replaceStrings 
+      ["refs/" "heads/" "tags/v" "tags/" "_"]
+      [""      ""       ""       ""      "."]
+      meta.ref;
+    version = 
+      if ref == meta.version
+      then meta.version
+      else ref;
   in {
     defaultPackage.x86_64-linux = pkgs.nimPackages.buildNimPackage {
-      inherit src;
+      inherit src version;
       pname = meta.name;
-      meta.description = meta.desc or meta.description or "nim package ${meta.name}";
-      version = meta.version or (builtins.replaceStr ["refs/.+/(vV)*"] [""] meta.ref);
+      propagatedBuildInputs = resolveDeps deps;
+      meta.description = 
+        meta.desc or
+        meta.description or 
+        "nim package ${meta.name}";
     };
     meta = meta;
   };
