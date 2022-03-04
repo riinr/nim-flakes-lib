@@ -43,16 +43,29 @@ let
         (builtins.trace (builtins.attrNames depPkgs) null);
       kind = depSpec.ver.kind;
       ver = depSpec.ver.ver;
-      compVer = a: b: builtins.compareVersions a b > 0;
-      compVerEq = a: b: builtins.compareVersions a b >= 0;
+      compVerKind = k: a: b:
+        if k == "verEq"
+        then builtins.compareVersions a b == 0
+        else if k == "verLater"
+        then builtins.compareVersions a b > 0
+        else if k == "verEqLater"
+        then builtins.compareVersions a b >= 0
+        else if k == "verEarlier"
+        then builtins.compareVersions a b < 0
+        else if k == "verEqEarlier"
+        then builtins.compareVersions a b <= 0
+        else false;
+      compVer = compVerKind "verLater";
+      compVerEq = compVerKind "verEqLater";
       algs = {
+        verAny = defaultPackage;
         verEq = 
           let 
             vSuffix = builtins.replaceStrings ["."] ["_"] ver;
           in
             depPkgs."${lowerName}-v${vSuffix}" or 
             depPkgs."${lowerName}-${vSuffix}" or 
-            (builtins.trace "using default not ${vSuffix}" defaultPackage);
+            (builtins.trace "using default not ${vSuffix} for ${lowerName} in ${meta.name}" defaultPackage);
         verLater = 
           let 
             validVersions = builtins.filter 
@@ -64,7 +77,7 @@ let
           in
             depPkgs."${lowerName}-v${vSuffix}" or 
             depPkgs."${lowerName}-${vSuffix}" or 
-            (builtins.trace "using default not ${vSuffix}" defaultPackage);
+            (builtins.trace "using default not ${vSuffix} for ${lowerName} in ${meta.name}" defaultPackage);
         verEarlier =
           let 
             validVersions = builtins.filter 
@@ -76,7 +89,7 @@ let
           in
             depPkgs."${lowerName}-v${vSuffix}" or 
             depPkgs."${lowerName}-${vSuffix}" or 
-            (builtins.trace "using default not ${vSuffix}" defaultPackage);
+            (builtins.trace "using default not ${vSuffix} for ${lowerName} in ${meta.name}" defaultPackage);
         verEqLater = 
           let 
             validVersions = builtins.filter 
@@ -88,7 +101,7 @@ let
           in
             depPkgs."${lowerName}-v${vSuffix}" or 
             depPkgs."${lowerName}-${vSuffix}" or 
-            (builtins.trace "using default not ${vSuffix}" defaultPackage);
+            (builtins.trace "using default not ${vSuffix} for ${lowerName} in ${meta.name}" defaultPackage);
         verEqEarlier = 
           let 
             validVersions = builtins.filter 
@@ -100,13 +113,40 @@ let
           in
             depPkgs."${lowerName}-v${vSuffix}" or 
             depPkgs."${lowerName}-${vSuffix}" or 
-            (builtins.trace "using default not ${vSuffix}" defaultPackage);
-        verIntersect = builtins.trace "not implemented ${kind}" defaultPackage;
-        verTilde = builtins.trace "not implemented ${kind}" defaultPackage;
-        verCaret = builtins.trace "not implemented ${kind}" defaultPackage;
-        verAny = defaultPackage;
-        verSpecial = builtins.trace "not implemented ${kind}" defaultPackage;
-
+            (builtins.trace "using default not ${vSuffix} for ${lowerName} in ${meta.name}" defaultPackage);
+        verIntersect = 
+          let
+            lVer = depSpec.ver.verILeft.ver;
+            lKind = depSpec.ver.verILeft.kind;
+            rVer = depSpec.ver.verIRight.ver;
+            rKind = depSpec.ver.verIRight.kind;
+            validVersions = builtins.filter 
+              (v: 
+                compVerKind lKind v lVer && 
+                compVerKind rKind v rVer)
+              depVersions;
+            lastVersion = builtins.head 
+              (builtins.sort compVer validVersions);
+            vSuffix = builtins.replaceStrings ["."] ["_"] lastVersion;
+          in
+            depPkgs."${lowerName}-v${vSuffix}" or 
+            depPkgs."${lowerName}-${vSuffix}" or 
+            (builtins.trace "using default not ${vSuffix} for ${lowerName} in ${meta.name}" defaultPackage);
+        verSpecial = 
+          let 
+            ver = depSpec.ver.spe;
+            vSuffix = builtins.replaceStrings ["#"] [""] ver;
+          in
+            depPkgs."${lowerName}-${vSuffix}" or
+            (builtins.trace "using default not ${vSuffix} for ${lowerName} in ${meta.name}" defaultPackage);
+        verTilde = 
+          builtins.trace
+          "not implemented ${kind} version resolution, using default for ${lowerName}"
+          defaultPackage;
+        verCaret = 
+          builtins.trace
+          "not implemented ${kind} version resolution, using default for ${lowerName}"
+          defaultPackage;
       };
       pkg = algs.${kind} or defaultPackage;
     in [ pkg ];
