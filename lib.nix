@@ -17,8 +17,23 @@ let
     inherit meta;
   };
   mkRefOutput = { self, nixpkgs, src, deps, meta }:
-  let 
+  let
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    lib = nixpkgs.lib;
+    resolveDep = depProject: depSpec:
+    let 
+      lowerName = lib.toLower depProject.meta.name; 
+      depPkgs = depProject.packages.x86_64-linux;
+      depPkgNames = builtins.attrNames depPkgs;
+      name2Version = n: builtins.replace [lowerName "v" "_"] ["" "" "."] n;
+      depVersions = map name2Version depPkgNames;
+      defaultPackage = 
+        depPkgs."${lowerName}-master" or 
+        depPkgs."${lowerName}-main" or 
+        depPkgs."${lowerName}-unstable" or 
+        depPkgs."${lowerName}-develop" or
+        (builtins.trace (builtins.attrNames depPkgs) null);
+    in builtins.trace depVersions [ defaultPackage ];
   in {
     defaultPackage.x86_64-linux = pkgs.nimPackages.buildNimPackage {
       inherit src;
