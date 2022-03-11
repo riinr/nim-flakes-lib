@@ -148,9 +148,9 @@ let
           using default (${firstRef}) for ${depName}
         ''
         defaultPkgName);
-  in [ depPkgs.${pkgName} ] ++ (depDeps.${pkgName} or []);
+  in [ depPkgs.${pkgName} ]; # ++ (depDeps.${pkgName} or []);
   resolveDeps = system: lib: meta: deps:
-    map
+    concatMap
     (resolveDep system lib meta)
     (attrValues deps);
   mkRefOutputFor = system: { self, nixpkgs, src, deps, meta }:
