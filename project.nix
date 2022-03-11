@@ -18,7 +18,7 @@ let
     inherit meta;
     defaultPackage.${system} = mainPkg.defaultPackage.${system};
     packages.${system} = mapAttrs (k: v: v.defaultPackage.${system}) refs;
-    dependencies.${system} = mapAttrs (k: v: v.dependencies.${system}) refs;
+    dependencies.${system} = mapAttrs (k: v: v.dependencies) refs;
   };
 in
 {
