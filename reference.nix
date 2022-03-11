@@ -148,7 +148,7 @@ let
           using default (${firstRef}) for ${depName}
         ''
         defaultPkgName);
-  in [ depPkgs.${pkgName} ]; # ++ (depDeps.${pkgName} or []);
+  in [ depPkgs.${pkgName} ] ++ (depDeps.${pkgName} or []);
   resolveDeps = system: lib: meta: deps:
     concatMap
     (resolveDep system lib meta)
