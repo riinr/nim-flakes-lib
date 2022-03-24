@@ -4,7 +4,7 @@ let
   let
     depPkg = depProject.defaultPackage.${system};
     subDeps = depProject.dependencies.${system};
-  in [ depPkg ] ++ subDeps;
+  in [ depPkg ]; # ++ subDeps;
   resolveDeps = system: lib: meta: deps:
     concatMap
     (resolveDep system lib meta)
