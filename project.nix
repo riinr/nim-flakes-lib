@@ -10,7 +10,9 @@ let
     mainPkg =
       refs."${lowerName}-master"   or
       refs."${lowerName}-main"     or
+      refs."${lowerName}-trunk"    or
       refs."${lowerName}-unstable" or
+      refs."${lowerName}-stage"    or
       refs."${lowerName}-develop"  or
       (trace refNames refs.${firstRef});
     baseOutput = { inherit meta; };
