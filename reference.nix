@@ -27,7 +27,9 @@ let
   in {
     inherit meta;
     dependencies.${system}   = dependencies;
-    packages.${system}.src   = src;
+    packages.${system}.src   = runCommand "nimpkgs-${name}-${version}" ''
+      cp -R ${src} $out
+    '';
     defaultPackage.${system} = buildNimPackage (
       (override)
         { inherit self nixpkgs src deps meta system; }
