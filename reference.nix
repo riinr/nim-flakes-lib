@@ -27,7 +27,7 @@ let
   in {
     inherit meta;
     dependencies.${system}   = dependencies;
-    packages.${system}.src   = pkgs.runCommand "src-${meta.name}-${version}" {} ''
+    packages.${system}.src   = pkgs.runCommand "src-${meta.name}-${version}" { inherit src; } ''
       cp -R ${src} $out
     '';
     defaultPackage.${system} = buildNimPackage (
