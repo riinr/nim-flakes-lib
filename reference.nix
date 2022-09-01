@@ -26,7 +26,8 @@ let
     dependencies = resolveDeps system lib meta deps;
   in {
     inherit meta;
-    dependencies.${system} = dependencies;
+    dependencies.${system}   = dependencies;
+    packages.${system}.src   = src;
     defaultPackage.${system} = buildNimPackage (
       (override)
         { inherit self nixpkgs src deps meta system; }
