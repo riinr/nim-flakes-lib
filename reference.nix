@@ -27,7 +27,7 @@ let
   in {
     inherit meta;
     dependencies.${system}   = dependencies;
-    packages.${system}.src   = pkgs.runCommand "nimpkgs-${name}-${version}" ''
+    packages.${system}.source   = pkgs.runCommand "nimpkgs-${name}-${version}" ''
       cp -R ${src} $out
     '';
     defaultPackage.${system} = buildNimPackage (
