@@ -10,7 +10,7 @@ let
     (resolveDep system lib meta)
     (attrValues deps);
   fn = args: drvArgs: drvArgs;
-  mkRefOutputFor = system: { self, nixpkgs, src, deps, meta, override ? fn}:
+  mkRefOutputFor = system: { self, nixpkgs, src, deps ? {}, meta, override ? fn}:
   let
     lib = nixpkgs.lib;
     pkgs = nixpkgs.legacyPackages.${system};
