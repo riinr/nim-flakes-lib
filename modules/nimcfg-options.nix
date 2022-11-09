@@ -403,13 +403,14 @@ in
       _Why there is no array?_
       
       Nix has array but there is no way to define how to disable one item from a array.
-      But we can override one attr value with [lib.mkDefault, lib.mkForce, lib.mkOverride](https://nixos.org/manual/nixos/stable/index.html#sec-option-definitions-setting-priorities).
+
+      Like we can override one attr value with [lib.mkDefault, lib.mkForce, lib.mkOverride](https://nixos.org/manual/nixos/stable/index.html#sec-option-definitions-setting-priorities).
 
 
       **LICENSE NOTICE**:
 
-      - Descriptions comes from: https://nim-lang.org/docs/nimc.html
-      - Please refer to https://github.com/nim-lang/Nim/blob/devel/copying.txt
+      - Descriptions comes from [Nim Docs](https://nim-lang.org/docs/nimc.html)
+      - Please read [Nim copyright](https://github.com/nim-lang/Nim/blob/devel/copying.txt)
     '';
   };
 }
