@@ -11,7 +11,7 @@ let
     type    = lib.types.nullOr lib.types.bool;
   };
 
-  options = builtins.mapAttrs lib.mkOption {
+  options = builtins.mapAttrs (k: opt: lib.mkOption opt) {
     asm                 = mkBool ''produce assembler code'';
     assertions          = mkBool ''turn assertions on|off'';
     benchmarkVM         = mkBool ''turn benchmarking of VM code with cpuTime() on|off'';
@@ -39,7 +39,8 @@ let
     lineDir             = mkBool ''generation of #line directive on|off'';
     lineTrace           = mkBool ''turn line tracing on|off'';
     listCmd             = mkBool ''list the compilation commands; can be combined with --hint:exec:on and --hint:link:on'';
-    multimethods        = mkBool ''turn multi-methods on|off     --hotCodeReloading:on|off     turn support for hot code reloading on|off'';
+    multimethods        = mkBool ''turn multi-methods on|off'';
+    hotCodeReloading    = mkBool ''turn support for hot code reloading on|off'';
     nanChecks           = mkBool ''turn NaN checks on|off'';
     noLinking           = mkBool ''compile Nim and generated files but do not link'';
     noMain              = mkBool ''do not generate a main procedure'';
@@ -65,16 +66,16 @@ let
     unitsep             = mkBool ''use the ASCII unit separator (31) between error messages, useful for IDE-like tooling'';
     usenimcache         = mkBool ''will use $$nimcache, whichever it resolves to after all options have been processed'';
     warnings            = mkBool ''same as --hints but for warnings.'';
-
-    HEADER.default             = null;
+    
+    HEADER.default             = "";
     HEADER.description         = ''Insert this at begin of cfg file'';
     HEADER.example             = "# IM your HEADER";
     HEADER.type                = lib.types.nullOr lib.types.lines;
-    FOOTER.default             = null;
+    FOOTER.default             = "";
     FOOTER.description         = ''Insert this at end of cfg file'';
     FOOTER.example             = "# IM your FOOTER";
     FOOTER.type                = lib.types.nullOr lib.types.lines;
-
+    
     app.default                = null;
     app.description            = ''generate a CONSOLE app|GUI app|DLL|STATIC library'';
     app.example                = "gui";
@@ -105,7 +106,7 @@ let
     opt.type                   = lib.types.nullOr (lib.types.enum ["none" "speed" "size"]);
     processing.default         = null;
     processing.description     = ''show files as they're being processed by nim compiler'';
-    processing.example         = "off";
+    processing.example         = "filenames";
     processing.type            = lib.types.nullOr (lib.types.enum ["dots" "filenames" "off"]);
     styleCheck.default         = null;
     styleCheck.description     = ''produce hints or errors for Nim identifiers that do not adhere to Nim's [official style guide](https://nim-lang.org/docs/nep1.html). styleCheck:usages - only enforce consistent spellings of identifiers, do not enforce the style on declarations'';
@@ -119,7 +120,7 @@ let
     verbosity.description      = ''set Nim's verbosity level (1 is default)'';
     verbosity.example          = 3;
     verbosity.type             = lib.types.nullOr (lib.types.enum [0 1 2 3]);
-
+    
     errorMax.default           = null;
     errorMax.description       = ''stop compilation after N errors; 0 means unlimited'';
     errorMax.example           = 4;
@@ -136,7 +137,7 @@ let
     spellSuggest.description   = ''show at most num >= 0 spelling suggestions on typos. if num is not specified (or auto), return an implementation defined set of suggestions.'';
     spellSuggest.example       = 10;
     spellSuggest.type          = lib.types.nullOr lib.types.ints.positive;
-
+    
     cc.default                 = null;
     cc.description             = ''SYMBOL: specify the C compiler'';
     cc.example                 = "gcc";
@@ -189,7 +190,7 @@ let
     passL.description          = ''OPTION: pass an option to the linker'';
     passL.example              = "-flto";
     passL.type                 = lib.types.nullOr lib.types.str;
-
+    
     cincludes.default          = {};
     cincludes.description      = ''modify the C compiler header search PATH'';
     cincludes.example.X        = true;
@@ -262,6 +263,7 @@ let
     warningAsError.description = ''turn some WARNING in ERROR'';
     warningAsError.example.X   = true;
     warningAsError.type        = lib.types.attrsOf lib.types.bool;
+
     cppCompileToNamespace.default     = {};
     cppCompileToNamespace.description = ''use the provided NAMESPACE for the generated C++ code, if no namespace is provided "Nim" will be used'';
     cppCompileToNamespace.example.X   = true;
@@ -270,11 +272,12 @@ let
     NimblePath.description            = ''add a PATH for Nimble support'';
     NimblePath.example.X              = true;
     NimblePath.type                   = lib.types.attrsOf lib.types.bool;
-
+    
     define.default     = {};
     define.example.X   = "some value";
     define.example.Y   = true;
-    define.type        = lib.types.attrsOf (lib.types.either [lib.types.bool lib.types.str]);
+    define.example.z   = 42;
+    define.type        = lib.types.attrsOf (lib.types.oneOf [lib.types.bool lib.types.int lib.types.str]);
     define.description = ''define a conditional symbol (Optionally: Define the value for that symbol, see: "compile time define pragmas")'';
     putenv.default     = {};
     putenv.example.X   = "some value";
@@ -395,9 +398,17 @@ in
     description = ''
       Generates a file with config into your project.
 
+      **FAQ**
+
+      _Why there is no array?_
+      
+      Nix has array but there is no way to define how to disable one item from a array.
+      But we can override one attr value with [lib.mkDefault, lib.mkForce, lib.mkOverride](https://nixos.org/manual/nixos/stable/index.html#sec-option-definitions-setting-priorities).
+
+
       **LICENSE NOTICE**:
 
-      - Descriptions comes from: https://github.com/nim-lang/Nim/blob/devel/doc/nimc.md
+      - Descriptions comes from: https://nim-lang.org/docs/nimc.html
       - Please refer to https://github.com/nim-lang/Nim/blob/devel/copying.txt
     '';
   };

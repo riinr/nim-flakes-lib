@@ -1,14 +1,3 @@
-# nim-flakes-lib
-
-[Nix](https://nixos.org/) flake library to help create [Nim](https://nim-lang.org/) package using Nix.
-
-## Why
-
-Nix is a package manager, it install dependencies for us,
-can be used to install any [Nix package](https://search.nixos.org/) (nim, c libraries, tools, etc).
-
-Nix is a config language, it will (TODO) help configure your build, it can be used to generate our CI config, nim.cfg, and documentation, this configuration could be easy share with other nix packages.
-
 ## Usage
 
 - Add it to your inputs.
@@ -48,23 +37,3 @@ Currently only `defaultPackage` and `src` package, but in future we're planning 
 
 To build `defaultPackage` run `nix build`, it compiles your project to `result/bin/my_package_name`
 
-
-## See also
-
-- [Flake Nimble](https://github.com/nix-community/flake-nimble), auto generated flakes from [packages.json](https://github.com/nim-lang/packages/)
-- [Flake Crown](https://github.com/riinr/flake-crown), hard fork of Flake Nimble to use flake for pinning using this lib.
-- [Cosmonim](https://github.com/Yardanico/cosmonim), compile Nim with Cosmopolitan libc.
-- [Hello Musl](https://github.com/kaushalmodi/hello_musl), compile Nim with Musl + PCRE + libressl.
-- [Nim Emscripten Tutorial](https://github.com/treeform/nim_emscripten_tutorial), compile Nim for WASM.
-
-
-## Todo
-
-- [Devshell](https://github.com/numtide/devshell) ([Files](https://github.com/cruel-intentions/devshell-files)) Modules to configure nim.cfg
-- Make it generate packages for:
-  - Cosmopolitan
-  - Musl
-  - LibreSSL
-  - Emscripten
-  - Docs
-  - Generated (C/CPP) code
