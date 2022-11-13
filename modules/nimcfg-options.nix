@@ -278,7 +278,7 @@ let
     define.example.Y   = true;
     define.example.z   = 42;
     define.type        = lib.types.attrsOf (lib.types.oneOf [lib.types.bool lib.types.int lib.types.str]);
-    define.description = ''define a conditional symbol (Optionally: Define the value for that symbol, see: "compile time define pragmas")'';
+    define.description = ''define a conditional symbol (Optionally: Define the value for that symbol, see: "compile time define pragmas") ${builtins.readFile ./nimcfg-options-define.md}'';
     putenv.default     = {};
     putenv.example.X   = "some value";
     putenv.type        = lib.types.attrsOf lib.types.str;
