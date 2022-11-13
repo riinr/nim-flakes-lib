@@ -1,11 +1,12 @@
+Define a conditional symbol 
 
+Optionally: Define the value for that symbol, see: "compile time define pragmas"
 
 ### Some `define` options
 
 - consoleapp
 - guiapp
 - release
-- threadsafe
 
 
 #### Hardware:
@@ -48,10 +49,13 @@
 - wasm
 - wasm32
 
+##### Arch Related
+
 - nimPinToCpu
 
 
 #### OS:
+
 - aix
 - amiga
 - alpha
@@ -90,11 +94,14 @@
 - zephyr
 - vxworks
 
+##### OS Related
+
 - kqcache (BSD)
 - SocketMaxConnections = 32  (freertos)
 
 
 #### Compillers:
+
 - bcc
 - clang
 - clangcl
@@ -108,30 +115,35 @@
 
 
 #### Languages
+
 - c
 - cpp
 - js
 - nimscript
 
+##### Lang Related
+
 - nimble
 - nimconfig
 - nimdoc
 - nimsuggest
-- nodejs
 - booting
+- nodejs
 - vm
 - kwin
-
 - nimJsMathTruncPolyfill
 - nimJsonGet
 - nimLegacyJsRound
 - noCppExceptions
 
 
-#### libC
+#### Lib C
+
 - emscripten
 - nimNoLibc
 - uClibc
+
+##### Lib Related
 
 - lwip
 - lwip6
@@ -142,9 +154,12 @@
 - nimExperimentalLinenoiseExtra
 
 
-#### ssl
+#### SSL
+
 - ssl
 - libressl
+
+##### SSL Related
 
 - openssl10
 - sslVersion = ""
@@ -153,13 +168,17 @@
 - nimDisableCertificateValidation
 - nimTlsSize = 16000
 
+
 #### Memory Management
+
 - boehmgc
 - boehmNoIntPtr
 - gcArc
 - gcOrc
 - gogc
 - nogc
+
+##### MM Related
 
 - builtinOverflow
 - gcDestructors
@@ -177,6 +196,7 @@
 - nimAllocStats
 - nimArcDebug
 - nimArcIds
+- nimEmulateOverflowChecks
 - nimFixedOrc
 - nimFixedOwned
 - nimHasLentIterators
@@ -200,6 +220,16 @@
 - useMalloc
 - useRealtimeGC
 - zephyrUseLibcMalloc
+
+
+#### Threads
+
+- threadsafe
+- MaxDistinguishedThread = 32
+- MaxThreadPoolSize = 256
+- nimThreadStackGuard = 128
+- nimThreadStackSize = 8192
+- threadpoolWaitMs = 100
 
 
 #### Debug
@@ -228,6 +258,7 @@
 - testNimHcr
 - traceHcr
 
+
 #### Others
 
 - avlcorruption and nimAvlcorruption
@@ -235,8 +266,6 @@
 - createNimRtl
 - nimCallDepthLimit = 2000
 - globalSymbols
-- MaxThreadPoolSize = 256
-- MaxDistinguishedThread = 32
 - net\_ipv4
 - net\_ipv6
 - net\_raw
@@ -248,7 +277,6 @@
 - nimCorruption
 - nimCycleBreaker
 - nimDontSetUtf8CodePage
-- nimEmulateOverflowChecks
 - nimFixedForwardGeneric
 - nimHasCallsitePragma
 - nimHasCursor
@@ -309,13 +337,11 @@
 - nimSymImplTransform
 - nimTempPathLength = 8
 - nimThinout
-- nimThreadStackGuard = 128
-- nimThreadStackSize = 8192
 - nimToOpenArrayCString
 - nimTypeNames
 - nimUnittestAbortOnError
-- nimUnittestOutputLevel = ...
-- nimUnittestColor = "auto" ## auto|on|off
+- nimUnittestOutputLevel = "..."
+- nimUnittestColor = "auto" (auto|on|off)
 - nimUse64BitCTime
 - nimV2
 - nimfix
@@ -326,12 +352,11 @@
 - noUnidecodeTable
 - posixRealtime
 - reportMissedDeadlines
-- tempDir = ""
-- threadpoolWaitMs = 100
+- tempDir = "..."
 - useClone
 - useFork
 - useNimRtl
-- useShPath = ""
+- useShPath = "..."
 - useStdoutAsStdmsg
 - useSysAssert
 - useWinAnsi
