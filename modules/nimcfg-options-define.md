@@ -1,6 +1,6 @@
 
 
-## Some `define` options
+### Some `define` options
 
 - consoleapp
 - guiapp
@@ -8,7 +8,7 @@
 - threadsafe
 
 
-### Hardware:
+#### Hardware:
 
 - avr
 - amd64
@@ -51,7 +51,7 @@
 - nimPinToCpu
 
 
-### OS:
+#### OS:
 - aix
 - amiga
 - alpha
@@ -94,7 +94,7 @@
 - SocketMaxConnections = 32  (freertos)
 
 
-### Compillers:
+#### Compillers:
 - bcc
 - clang
 - clangcl
@@ -107,7 +107,7 @@
 - wcc
 
 
-### Languages
+#### Languages
 - c
 - cpp
 - js
@@ -128,7 +128,7 @@
 - noCppExceptions
 
 
-### libC
+#### libC
 - emscripten
 - nimNoLibc
 - uClibc
@@ -142,7 +142,7 @@
 - nimExperimentalLinenoiseExtra
 
 
-### ssl
+#### ssl
 - ssl
 - libressl
 
@@ -153,7 +153,7 @@
 - nimDisableCertificateValidation
 - nimTlsSize = 16000
 
-### Memory Management
+#### Memory Management
 - boehmgc
 - boehmNoIntPtr
 - gcArc
@@ -202,7 +202,7 @@
 - zephyrUseLibcMalloc
 
 
-### Debug
+#### Debug
 
 - androidNDK
 - debugFmtDsl
@@ -228,7 +228,7 @@
 - testNimHcr
 - traceHcr
 
-### Others
+#### Others
 
 - avlcorruption and nimAvlcorruption
 - createNimHcr
