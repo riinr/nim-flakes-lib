@@ -6,7 +6,7 @@ in
   options.nimcfg = lib.mkOption {
     default     = {};
     description = ''
-      Generates a file with config into your project.
+      Generates a Nim config file into your project.
 
       **FAQ**
 

@@ -5,7 +5,7 @@ in
 {
   options.nimpkg = lib.mkOption {
     default     = {};
-    description = ''setup a nim package'';
+    description = ''Setup Nim packages'';
     type        = lib.types.attrsOf (lib.types.submodule { options = opts-attrs.nim-pkg; });
     example.yourPkgName-default.default = true;
     example.yourPkgName-default.version = "0.1.0";
