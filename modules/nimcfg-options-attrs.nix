@@ -22,7 +22,7 @@ let
     homepage.type               = lib.types.nullOr lib.types.str;
     license.default             = null;
     license.description         = "Package License";
-    license.example             = lib.licenses.mit;
+    license.example             = "mit";
     license.type                = lib.types.nullOr (lib.types.enum (builtins.attrNames lib.licenses));
     longDescription.default     = null;
     longDescription.description = "package long description";
@@ -418,11 +418,11 @@ let
     file.type             = lib.types.nullOr lib.types.path;
     meta.default          = {};
     meta.example.homepage = "https://github.com/riinr/nim-flakes-lib";
-    meta.example.license  = lib.licenses.mit;
+    meta.example.license  = "mit";
     meta.type             = lib.types.submodule { options = meta; };
     nimble.default        = {};
     nimble.description    = "Configure Nimble";
-    nimble.example.disable = false;
+    nimble.example.enable = false;
     nimble.type           = lib.types.submodule { options = nimble; };
     nim.default           = null;
     nim.description       = "nim package to be used";
