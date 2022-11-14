@@ -24,6 +24,7 @@ in
   files.text."/gh-pages/src/see-also.md" = builtins.readFile ./see-also.md;
   files.text."/gh-pages/src/usage.md"    = builtins.readFile ./usage.md;
   files.docs."/gh-pages/src/nimcfg-options.md".modules = [ ../modules/nimcfg-options.nix ];
+  files.docs."/gh-pages/src/nimpkg-options.md".modules = [ ../modules/nimpkg-options.nix ];
   files.gitignore.pattern."gh-pages" = true;
   gh-actions.gh-pages.build  = "publish-as-gh-pages";
   gh-actions.gh-pages.enable = true;

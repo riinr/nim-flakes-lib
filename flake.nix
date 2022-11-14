@@ -13,7 +13,9 @@
     (dsf.lib.shell    { inherit self nixpkgs dsf; } [
       "${inputs.gha}/gh-actions.nix"
       ./modules/nimcfg-options.nix
+      ./modules/nimpkg-options.nix
       ./modules/nimcfg-files.nix
+      ./modules/nimpkg-files.nix
       ./devshell.nix
     ]);
 }

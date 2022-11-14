@@ -18,7 +18,7 @@ Example:
   inputs.flakeNimbleLib.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = inputs:
-    (inputs.flakeNimbleLib.lib.mkRefOutput {
+    inputs.flakeNimbleLib.lib.mkRefOutput {
       nixpkgs = inputs.nixpkgs;
       self    = inputs.self;
       src     = ./.;                                                     # source could be an input also
@@ -26,9 +26,18 @@ Example:
       meta.version = "0.1.0";
       meta.name    = "my_package_name";
       meta.desc    = "My package description";
-    })
-    //                                                                   # this means merge previous object with this one
-    (inputs.dsf.lib.shell inputs [ ./nix/project.nix ]);                 # optional
+    }
+
+    # optional
+    # use devshell to configure your dev environment
+    //    # merge objects: `{ a = "a"; } // { b = "b"; }` == `{ a = "a"; b = "b"; }`
+    (inputs.dsf.lib.shell 
+      inputs
+      [ 
+        ${inputs.flakeNimbleLib}/modules/nimcfg-files.nix                # helper to create cfg files
+        ./nix/project.nix                                                # your devshell configs
+      ]
+    );
 }
 ```
 

@@ -1,6 +1,7 @@
 {
   imports = [
     ./modules/nimcfg-example.nix
+    ./modules/nimpkg-example.nix
     ./docs/readme.nix
     ./docs/book.nix
   ];
