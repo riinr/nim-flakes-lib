@@ -1,8 +1,30 @@
 Define a conditional symbol 
 
-Optionally: Define the value for that symbol, see: "compile time define pragmas"
+Optionally: Define the value for that symbol, see [compile time define pragmas](https://nim-lang.org/docs/manual.html#implementation-specific-pragmas-compileminustime-define-pragmas).
+
+Unlike other symbols that follow [identifier equality of nim](https://nim-lang.org/docs/manual.html#lexical-analysis-identifier-equality), define sysymbols are full case insensitive.
+
+Example:
+All defined will match with `-d:A_B`
+
+```nim
+when defined aB:
+  echo "aB"
+
+when defined Ab:
+  echo "Ab"
+
+when defined a_b:
+  echo "a_b"
+```
+
 
 ### Some `define` options
+
+This is a list of some define options found in Nim/Nim stdlib source code.
+
+Look at your dependency documentation to check if they define theirs own or require some of them.
+
 
 - consoleapp
 - guiapp
@@ -63,7 +85,7 @@ Optionally: Define the value for that symbol, see: "compile time define pragmas"
 - android4
 - bsd
 - dmc
-- dos and DOS
+- dos
 - dragonfly
 - freebsd
 - freertos
@@ -75,17 +97,17 @@ Optionally: Define the value for that symbol, see: "compile time define pragmas"
 - linux
 - macos
 - macosx
-- morphos and MorphOS
+- morphos
 - netbsd
 - netware
 - openbsd
-- os2 and OS2
+- os2
 - osx
 - palmos
 - posix
 - qnx
-- riscos and RISCOS
-- standalone and Standalone
+- riscos
+- standalone
 - skyos
 - solaris
 - sunos

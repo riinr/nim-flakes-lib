@@ -24,6 +24,7 @@
   # look at https://cruel-intentions.github.io/devshell-files/builtins.html
   # for more builtins options
   files.cmds.gcc  = true;
+  files.cmds.nim  = true;
 
   # look at https://cruel-intentions.github.io/devshell-files/modules.html
   # for how to create modules
