@@ -1,0 +1,3 @@
+{
+  nimpkg."my-package" = {};
+}
