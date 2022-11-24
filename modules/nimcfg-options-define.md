@@ -25,10 +25,18 @@ This is a list of some define options found in Nim/Nim stdlib source code.
 
 Look at your dependency documentation to check if they define theirs own or require some of them.
 
+And some of them should be [compiler paramaters](https://nim-lang.org/docs/nimc.html).
 
-- consoleapp
-- guiapp
-- release
+ie: 
+- `-d:consoleapp` should be `--app:console` 
+- `-d:linux` should be `--os:linux`
+
+
+#### Most common:
+
+- release (for a release build)
+- ssl (activate SSL sockets/HTTPS)
+- mingw ([cross compile for windows](https://nim-lang.org/docs/nimc.html#crossminuscompilation-for-windows))
 
 
 #### Hardware:
@@ -145,19 +153,20 @@ Look at your dependency documentation to check if they define theirs own or requ
 
 ##### Lang Related
 
-- nimble
-- nimconfig
-- nimdoc
-- nimsuggest
 - booting
-- nodejs
-- vm
+- consoleapp
+- guiapp
 - kwin
 - nimJsMathTruncPolyfill
 - nimJsonGet
 - nimLegacyJsRound
+- nimble
+- nimconfig
+- nimdoc
+- nimsuggest
 - noCppExceptions
-
+- nodejs
+- vm
 
 #### Lib C
 
